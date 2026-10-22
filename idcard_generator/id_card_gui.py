@@ -1,6 +1,7 @@
 import os
 import os
-import random
+import secrets
+secure_random = secrets.SystemRandom()
 import sys
 import threading
 import tkinter
@@ -69,9 +70,9 @@ class IDGen:
         set_entry_value(self.eName, random_name["name_full"])
         set_entry_value(self.eSex, '女' if random_name['sex'] == 0 else "男")
         set_entry_value(self.eNation, "汉")
-        year = random.randint(1980, 1995)
+        year = secure_random.randint(1980, 1995)
         set_entry_value(self.eYear, year)
-        month = random.randint(1, 12)
+        month = secure_random.randint(1, 12)
         set_entry_value(self.eMon, month)
         day = id_card_utils.random_day(year, month)
         set_entry_value(self.eDay, day)

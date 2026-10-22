@@ -1,4 +1,5 @@
-import random
+import secrets
+secure_random = secrets.SystemRandom()
 
 
 def random_name():
@@ -44,16 +45,16 @@ def random_name():
         name_girl_ming.append(everyChar)
 
     # 随机生成姓氏
-    name_xing = random.choice(name_xing_all)
+    name_xing = secure_random.choice(name_xing_all)
     # 随机生成性别
-    sex = random.choice([0, 1])
+    sex = secure_random.choice([0, 1])
 
     if sex == 0:
         # 女性
-        name_ming = random.choice(name_girl_ming)
+        name_ming = secure_random.choice(name_girl_ming)
     else:
         # 男性
-        name_ming = random.choice(name_body_ming)
+        name_ming = secure_random.choice(name_body_ming)
 
     return {
         "name_full": name_xing + name_ming,
