@@ -3,10 +3,20 @@ from unittest.mock import patch, mock_open
 import json
 import os
 import sys
+import tempfile
 
 from idcard_generator.address_utils import get_random_address, create_default_config_file
 
 class TestAddressUtils(unittest.TestCase):
+    def setUp(self):
+        # Create a temporary directory
+        self.test_dir = tempfile.TemporaryDirectory()
+        self.config_path = os.path.join(self.test_dir.name, 'test_address_config.json')
+
+    def tearDown(self):
+        # Cleanup the temporary directory
+        self.test_dir.cleanup()
+
     @patch('idcard_generator.address_utils.os.path.exists')
     @patch('idcard_generator.address_utils.utils.get_base_path')
     @patch('builtins.open', new_callable=mock_open, read_data=json.dumps({"addresses": ["Address 1", "Address 2"]}))
@@ -85,6 +95,20 @@ class TestAddressUtils(unittest.TestCase):
             create_default_config_file(config_path)
         except Exception:
             self.fail("create_default_config_file() raised Exception unexpectedly!")
+
+    def test_create_default_config_file_invalid_path(self):
+        """Test that exceptions are handled silently for invalid paths."""
+        # Use a path that is known to be invalid/unwritable to trigger exception
+        invalid_path = os.path.join(self.test_dir.name, 'nonexistent_dir', 'test_address_config.json')
+
+        # Should not raise any exception
+        try:
+            create_default_config_file(invalid_path)
+        except Exception as e:
+            self.fail(f"create_default_config_file raised Exception unexpectedly: {e}")
+
+        # Ensure file wasn't magically created in a non-existent dir
+        self.assertFalse(os.path.exists(invalid_path))
 
 if __name__ == '__main__':
     unittest.main()
