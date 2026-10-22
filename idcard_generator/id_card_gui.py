@@ -57,9 +57,7 @@ def change_background(img, img_back, zoom_size, center):
 def paste(avatar, bg, zoom_size, center):
     avatar = cv2.resize(avatar, zoom_size)
     rows, cols, channels = avatar.shape
-    for i in range(rows):
-        for j in range(cols):
-            bg[center[0] + i, center[1] + j] = avatar[i, j]
+    bg[center[0]:center[0] + rows, center[1]:center[1] + cols] = avatar
     return bg
 
 
