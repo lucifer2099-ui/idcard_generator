@@ -27,7 +27,7 @@ def test_random_name_logic():
     else:
         assert result["sex_text"] == "男"
 
-@patch('idcard_generator.name_utils.random.choice')
+@patch('idcard_generator.name_utils.secure_random.choice')
 def test_random_name_male(mock_choice):
     # Mocking choice to return a specific surname, gender, and male name
     mock_choice.side_effect = ['张', 1, '伟']
@@ -38,7 +38,7 @@ def test_random_name_male(mock_choice):
     assert result["sex"] == 1
     assert result["sex_text"] == "男"
 
-@patch('idcard_generator.name_utils.random.choice')
+@patch('idcard_generator.name_utils.secure_random.choice')
 def test_random_name_female(mock_choice):
     # Mocking choice to return a specific surname, gender, and female name
     mock_choice.side_effect = ['李', 0, '娜']
