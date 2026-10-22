@@ -33,10 +33,8 @@ def get_show_len(txt):
 # end 显示长度结束位置
 def get_show_txt(txt, show_start, show_end):
     def get_show_index(txt, i_len):
-        res_txt = ''
         for index, char in enumerate(txt):
-            res_txt = res_txt + char
-            res_show_len = get_show_len(res_txt)
+            res_show_len = get_show_len(txt[:index+1])
             if (res_show_len > i_len):
                 return index
         return get_show_len(txt)
