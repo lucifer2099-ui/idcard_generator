@@ -1,5 +1,6 @@
 import datetime
-import random
+import secrets
+secure_random = secrets.SystemRandom()
 import calendar
 
 
@@ -38,7 +39,7 @@ XUZHOU_AREA_CODES = [
 def random_card_no(prefix='', year='', month='', day='', sex=None):
     if len(prefix) < 6:
         # 默认使用徐州市随机区县的编码
-        prefix = random.choice(XUZHOU_AREA_CODES)
+        prefix = secure_random.choice(XUZHOU_AREA_CODES)
     else:
         prefix = prefix[0:6]
 
@@ -48,35 +49,35 @@ def random_card_no(prefix='', year='', month='', day='', sex=None):
         if int(year) < 1980:
             year = str(1980)
     else:
-        year = str(random.randint(1980, 2020))
+        year = str(secure_random.randint(1980, 2020))
 
     if len(month) > 0:
         month = str(month[0:2]).zfill(2)
     else:
-        month = str(random.randint(1, 12)).zfill(2)
+        month = str(secure_random.randint(1, 12)).zfill(2)
 
     if len(day) > 0:
         day = str(day).zfill(2)
     else:
-        day = str(random.randint(1, 28)).zfill(2)
+        day = str(secure_random.randint(1, 28)).zfill(2)
 
     # 生成顺序码（15-17位），其中第17位表示性别
     # 第15-16位：随机生成
-    seq_first = str(random.randint(0, 99)).zfill(2)
+    seq_first = str(secure_random.randint(0, 99)).zfill(2)
     
     # 第17位：根据性别生成，奇数为男，偶数为女
     if sex is None:
         # 如果没有指定性别，随机生成
-        seq_last = str(random.randint(0, 9))
+        seq_last = str(secure_random.randint(0, 9))
     elif sex == 1:  # 男性
         # 生成奇数
-        seq_last = str(random.choice([1, 3, 5, 7, 9]))
+        seq_last = str(secure_random.choice([1, 3, 5, 7, 9]))
     elif sex == 0:  # 女性
         # 生成偶数
-        seq_last = str(random.choice([0, 2, 4, 6, 8]))
+        seq_last = str(secure_random.choice([0, 2, 4, 6, 8]))
     else:
         # 默认随机生成
-        seq_last = str(random.randint(0, 9))
+        seq_last = str(secure_random.randint(0, 9))
     
     rand_value = seq_first + seq_last
 
@@ -88,22 +89,22 @@ def random_card_no(prefix='', year='', month='', day='', sex=None):
 # 随机生成身份证号
 def random_day(year=2020, month=2):
     monthRange = calendar.monthrange(year, month)
-    return random.randint(1, monthRange[1])
+    return secure_random.randint(1, monthRange[1])
 
 
 # 生成身份证有效期限（严格的20年，结束日期在2030年之后）
 def generate_validity_period():
     # 随机生成起始年份，从当前年份往前推5-15年
     current_year = datetime.datetime.now().year
-    start_year = random.randint(current_year - 15, current_year - 5)
+    start_year = secure_random.randint(current_year - 15, current_year - 5)
     
     # 确保起始年份不会导致20年后仍在2030年前
     min_start_year = 2030 - 20
     if start_year < min_start_year:
         start_year = min_start_year
     
-    start_month = random.randint(1, 12)
-    start_day = random.randint(1, 28)
+    start_month = secure_random.randint(1, 12)
+    start_day = secure_random.randint(1, 28)
     start_time = datetime.datetime(start_year, start_month, start_day)
     
     # 计算结束时间（严格的20年后，保持相同的月日）
