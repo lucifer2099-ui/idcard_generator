@@ -1,7 +1,32 @@
 import datetime
+import unittest
 from unittest.mock import patch
 
-from idcard_generator.id_card_utils import generate_validity_period
+from idcard_generator.id_card_utils import IdentityCard, generate_validity_period
+
+
+class TestIdentityCardCheck(unittest.TestCase):
+
+    def test_check_valid_length(self):
+        # 17 characters string should return True
+        valid_code = "12345678901234567"
+        self.assertTrue(IdentityCard.check(valid_code))
+
+    def test_check_invalid_length_short(self):
+        # Less than 17 characters should return False
+        short_code = "1234567890123456"
+        self.assertFalse(IdentityCard.check(short_code))
+
+    def test_check_invalid_length_long(self):
+        # More than 17 characters should return False
+        long_code = "123456789012345678"
+        self.assertFalse(IdentityCard.check(long_code))
+
+    def test_check_empty_string(self):
+        # Empty string should return False
+        empty_code = ""
+        self.assertFalse(IdentityCard.check(empty_code))
+
 
 def test_generate_validity_period_format_and_gap():
     """Test the general format and the strict 20-year gap rule."""
@@ -22,6 +47,7 @@ def test_generate_validity_period_format_and_gap():
 
     # Check it ends strictly after or exactly on 2030 (based on implementation logic start_year >= 2010 -> end_year >= 2030)
     assert end_date.year >= 2030
+
 
 def test_generate_validity_period_clamping_to_2010():
     """Test that if the random start year would be < 2010, it is clamped to 2010."""
@@ -46,6 +72,7 @@ def test_generate_validity_period_clamping_to_2010():
         assert start_date.month == end_date.month
         assert start_date.day == end_date.day
 
+
 def test_generate_validity_period_no_clamping():
     """Test that if the random start year is >= 2010, it is NOT clamped to 2010."""
     # Mock datetime.now() to a year where current_year - 15 >= 2010 (e.g. 2026)
@@ -64,6 +91,7 @@ def test_generate_validity_period_no_clamping():
         assert start_date.year <= 2021
         assert start_date.year != 2010  # Because range starts at 2011
 
+
 def test_generate_validity_period_randomness():
     """Test that multiple calls generate different validity periods (non-deterministic parts)."""
     results = set()
@@ -72,3 +100,7 @@ def test_generate_validity_period_randomness():
 
     # Very unlikely to generate exactly the same start and end 10 times in a row
     assert len(results) > 1
+
+
+if __name__ == '__main__':
+    unittest.main()
