@@ -1,6 +1,7 @@
 import json
 import os
-import random
+import secrets
+secure_random = secrets.SystemRandom()
 import sys
 from . import utils
 
@@ -24,7 +25,7 @@ def get_random_address():
             config = json.load(f)
             addresses = config.get('addresses', [])
             if addresses:
-                return random.choice(addresses)
+                return secure_random.choice(addresses)
             else:
                 # 如果配置文件为空，返回默认地址
                 return "江苏省南京市鼓楼区中山路1号"

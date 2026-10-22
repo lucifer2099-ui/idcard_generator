@@ -1,5 +1,30 @@
+import unittest
 import pytest
-from idcard_generator.id_card_utils import random_card_no, IdentityCard, XUZHOU_AREA_CODES
+from idcard_generator.id_card_utils import IdentityCard, random_card_no, XUZHOU_AREA_CODES
+
+
+class TestIdentityCardCheck(unittest.TestCase):
+
+    def test_check_valid_length(self):
+        # 17 characters string should return True
+        valid_code = "12345678901234567"
+        self.assertTrue(IdentityCard.check(valid_code))
+
+    def test_check_invalid_length_short(self):
+        # Less than 17 characters should return False
+        short_code = "1234567890123456"
+        self.assertFalse(IdentityCard.check(short_code))
+
+    def test_check_invalid_length_long(self):
+        # More than 17 characters should return False
+        long_code = "123456789012345678"
+        self.assertFalse(IdentityCard.check(long_code))
+
+    def test_check_empty_string(self):
+        # Empty string should return False
+        empty_code = ""
+        self.assertFalse(IdentityCard.check(empty_code))
+
 
 def test_random_card_no_default():
     """Test the default generation of ID card numbers."""
@@ -16,6 +41,7 @@ def test_random_card_no_default():
     expected_vi_code = IdentityCard.calculate(code[:17])
     assert code[-1] == expected_vi_code
 
+
 def test_random_card_no_specific_prefix():
     """Test generating ID card with a specific prefix."""
     prefix = '110105'
@@ -23,6 +49,7 @@ def test_random_card_no_specific_prefix():
 
     assert code[:6] == prefix
     assert len(code) == 18
+
 
 def test_random_card_no_specific_year_month_day():
     """Test generating ID card with specific year, month, and day."""
@@ -36,6 +63,7 @@ def test_random_card_no_specific_year_month_day():
     assert code[10:12] == '05'
     assert code[12:14] == '09'
 
+
 def test_random_card_no_year_before_1980():
     """Test generating ID card with a year before 1980."""
     year = '1970'
@@ -44,6 +72,7 @@ def test_random_card_no_year_before_1980():
 
     assert code[6:10] == '1980'
 
+
 def test_random_card_no_sex_female():
     """Test generating ID card for a female."""
     code = random_card_no(sex=0)
@@ -51,12 +80,14 @@ def test_random_card_no_sex_female():
     seq_last = int(code[16])
     assert seq_last % 2 == 0
 
+
 def test_random_card_no_sex_male():
     """Test generating ID card for a male."""
     code = random_card_no(sex=1)
 
     seq_last = int(code[16])
     assert seq_last % 2 != 0
+
 
 def test_random_card_no_all_parameters():
     """Test generating ID card with all specific parameters."""
@@ -79,3 +110,7 @@ def test_random_card_no_all_parameters():
     # Parity bit check
     expected_vi_code = IdentityCard.calculate(code[:17])
     assert code[-1] == expected_vi_code
+
+
+if __name__ == '__main__':
+    unittest.main()
