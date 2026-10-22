@@ -46,10 +46,9 @@ def change_background(img, img_back, zoom_size, center):
     dilate = cv2.dilate(erode, None, iterations=1)
 
     # 粘贴
-    for i in range(rows):
-        for j in range(cols):
-            if dilate[i, j] == 0:  # 0代表黑色的点
-                img_back[center[0] + i, center[1] + j] = img[i, j]  # 此处替换颜色，为BGR通道
+    black_pixels = (dilate == 0)
+    roi = img_back[center[0]:center[0]+rows, center[1]:center[1]+cols]
+    roi[black_pixels] = img[black_pixels]
 
     return img_back
 
