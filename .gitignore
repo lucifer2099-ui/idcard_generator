@@ -1,0 +1,18 @@
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+dist/
+build/
+venv/
+__pycache__/
+
+# Environments & IDEs
+.idea/
+.vscode/
+*.log
+
+# Generated test outputs
+bw.png
+color.png
