@@ -95,10 +95,6 @@ class LoadingBar(object):
         # 设置显示标识为不显示
         self.__showFlag = False
 
-    def stop(self):
-        time.sleep(5)
-        self.close()
-
 
 # 模拟显示一个弹窗，并禁用父窗口，5秒后关闭弹窗
 if __name__ == '__main__':
