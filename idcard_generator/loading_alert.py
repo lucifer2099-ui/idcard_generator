@@ -74,10 +74,6 @@ class LoadingBar(object):
         self.progress_bar.pack(expand=True)
         # 数值越小，滚动越快
         self.progress_bar.start(speed)
-        # # 开启新线程保持滚动条显示（使用会报错，使用after代替）
-        # waitThread = threading.Thread(target=self.wait_close)
-        # waitThread.setDaemon(True)
-        # waitThread.start()
         self.__dialog.after(250, self.wait_close)
 
     def wait_close(self):
