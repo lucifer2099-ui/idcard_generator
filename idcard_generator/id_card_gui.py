@@ -141,7 +141,6 @@ class IDGen:
     def show_ui(self, root):
         self.root = root
         root.title('AIRobot身份证图片生成器')
-        # root.geometry('640x480')
         root.resizable(width=False, height=False)
         link = Label(root, text='请遵守法律法规，获取帮助:', cursor='hand2', foreground="#FF0000")
         link.grid(row=0, column=0, sticky=tkinter.W, padx=3, pady=3, columnspan=3)
