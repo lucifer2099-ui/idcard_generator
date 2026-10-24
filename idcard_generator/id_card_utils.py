@@ -113,18 +113,6 @@ def generate_validity_period():
     return start_time.strftime("%Y.%m.%d"), expire_time.strftime("%Y.%m.%d")
 
 
-# 身份证起始日（保留原函数名以保持兼容性）
-def get_start_time():
-    start_time, _ = generate_validity_period()
-    return start_time
-
-
-# 身份证到期日（保留原函数名以保持兼容性）
-def get_expire_time():
-    _, expire_time = generate_validity_period()
-    return expire_time
-
-
 def test():
     code = random_card_no()  # 17位身份证
     print(code)
