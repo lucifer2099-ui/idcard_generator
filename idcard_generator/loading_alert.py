@@ -56,10 +56,6 @@ class LoadingBar(object):
         self.__dialog.wm_attributes("-topmost", True)
         # 禁止拉伸窗口
         self.__dialog.resizable(0, 0)
-        # 去除边框
-        # self.__dialog.overrideredirect(-1)
-        # 去掉窗口最大化最小化按钮，只保留关闭
-        # self.__dialog.attributes("-toolwindow", 2)
         # 设置关闭方式
         self.__dialog.protocol("WM_DELETE_WINDOW", lambda: None)
 
