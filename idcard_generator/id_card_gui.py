@@ -4,9 +4,9 @@ secure_random = secrets.SystemRandom()
 import sys
 import threading
 import tkinter
-from tkinter.filedialog import *
-from tkinter.messagebox import *
-from tkinter.ttk import *
+from tkinter.filedialog import askopenfilename
+from tkinter.messagebox import showinfo
+from tkinter.ttk import Button, Checkbutton, Entry, Label
 
 import PIL.Image as PImage
 import cv2
