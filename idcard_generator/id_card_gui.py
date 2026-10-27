@@ -4,9 +4,9 @@ secure_random = secrets.SystemRandom()
 import sys
 import threading
 import tkinter
-from tkinter.filedialog import *
-from tkinter.messagebox import *
-from tkinter.ttk import *
+from tkinter.filedialog import askopenfilename
+from tkinter.messagebox import showinfo
+from tkinter.ttk import Button, Checkbutton, Entry, Label
 
 import PIL.Image as PImage
 import cv2
@@ -138,11 +138,11 @@ class IDGen:
         self.loading_bar.close()
         showinfo('成功', '文件已生成到目录下,黑白bw.png和彩色color.png')
 
-    def _create_label_entry(self, root, label_text, row, col, width, columnspan=1):
-        Label(root, text=label_text).grid(row=row, column=col, sticky=tkinter.W, padx=3, pady=3)
+    def _add_field(self, root, text, attr_name, row, col, width=8, colspan=1):
+        Label(root, text=text).grid(row=row, column=col, sticky=tkinter.W, padx=3, pady=3)
         entry = Entry(root, width=width)
-        entry.grid(row=row, column=col + 1, sticky=tkinter.W, padx=3, pady=3, columnspan=columnspan)
-        return entry
+        entry.grid(row=row, column=col + 1, sticky=tkinter.W, padx=3, pady=3, columnspan=colspan)
+        setattr(self, attr_name, entry)
 
     def show_ui(self, root):
         self.root = root
@@ -156,19 +156,18 @@ class IDGen:
         link.grid(row=0, column=2, sticky=tkinter.W, padx=26, pady=3, columnspan=4)
         link.bind("<Button-1>", utils.open_url)
 
-        self.eName = self._create_label_entry(root, '姓名:', 1, 0, width=8)
-        self.eSex = self._create_label_entry(root, '性别:', 1, 2, width=8)
-        self.eNation = self._create_label_entry(root, '民族:', 1, 4, width=8)
+        self._add_field(root, '姓名:', 'eName', 1, 0)
+        self._add_field(root, '性别:', 'eSex', 1, 2)
+        self._add_field(root, '民族:', 'eNation', 1, 4)
 
-        self.eYear = self._create_label_entry(root, '出生年:', 2, 0, width=8)
-        self.eMon = self._create_label_entry(root, '月:', 2, 2, width=8)
-        self.eDay = self._create_label_entry(root, '日:', 2, 4, width=8)
+        self._add_field(root, '出生年:', 'eYear', 2, 0)
+        self._add_field(root, '月:', 'eMon', 2, 2)
+        self._add_field(root, '日:', 'eDay', 2, 4)
 
-        self.eAddr = self._create_label_entry(root, '住址:', 3, 0, width=32, columnspan=5)
-        self.eIdn = self._create_label_entry(root, '证件号码:', 4, 0, width=32, columnspan=5)
-        self.eOrg = self._create_label_entry(root, '签发机关:', 5, 0, width=32, columnspan=5)
-        self.eLife = self._create_label_entry(root, '有效期限:', 6, 0, width=32, columnspan=5)
-
+        self._add_field(root, '住址:', 'eAddr', 3, 0, width=32, colspan=5)
+        self._add_field(root, '证件号码:', 'eIdn', 4, 0, width=32, colspan=5)
+        self._add_field(root, '签发机关:', 'eOrg', 5, 0, width=32, colspan=5)
+        self._add_field(root, '有效期限:', 'eLife', 6, 0, width=32, colspan=5)
         Label(root, text='选项:').grid(row=7, column=0, sticky=tkinter.W, padx=3, pady=3)
         self.eBgvar = tkinter.IntVar()
         self.eBgvar.set(1)
