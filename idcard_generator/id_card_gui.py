@@ -138,6 +138,12 @@ class IDGen:
         self.loading_bar.close()
         showinfo('成功', '文件已生成到目录下,黑白bw.png和彩色color.png')
 
+    def _create_label_entry(self, root, label_text, row, col, width, columnspan=1):
+        Label(root, text=label_text).grid(row=row, column=col, sticky=tkinter.W, padx=3, pady=3)
+        entry = Entry(root, width=width)
+        entry.grid(row=row, column=col + 1, sticky=tkinter.W, padx=3, pady=3, columnspan=columnspan)
+        return entry
+
     def show_ui(self, root):
         self.root = root
         root.title('AIRobot身份证图片生成器')
@@ -150,36 +156,19 @@ class IDGen:
         link.grid(row=0, column=2, sticky=tkinter.W, padx=26, pady=3, columnspan=4)
         link.bind("<Button-1>", utils.open_url)
 
-        Label(root, text='姓名:').grid(row=1, column=0, sticky=tkinter.W, padx=3, pady=3)
-        self.eName = Entry(root, width=8)
-        self.eName.grid(row=1, column=1, sticky=tkinter.W, padx=3, pady=3)
-        Label(root, text='性别:').grid(row=1, column=2, sticky=tkinter.W, padx=3, pady=3)
-        self.eSex = Entry(root, width=8)
-        self.eSex.grid(row=1, column=3, sticky=tkinter.W, padx=3, pady=3)
-        Label(root, text='民族:').grid(row=1, column=4, sticky=tkinter.W, padx=3, pady=3)
-        self.eNation = Entry(root, width=8)
-        self.eNation.grid(row=1, column=5, sticky=tkinter.W, padx=3, pady=3)
-        Label(root, text='出生年:').grid(row=2, column=0, sticky=tkinter.W, padx=3, pady=3)
-        self.eYear = Entry(root, width=8)
-        self.eYear.grid(row=2, column=1, sticky=tkinter.W, padx=3, pady=3)
-        Label(root, text='月:').grid(row=2, column=2, sticky=tkinter.W, padx=3, pady=3)
-        self.eMon = Entry(root, width=8)
-        self.eMon.grid(row=2, column=3, sticky=tkinter.W, padx=3, pady=3)
-        Label(root, text='日:').grid(row=2, column=4, sticky=tkinter.W, padx=3, pady=3)
-        self.eDay = Entry(root, width=8)
-        self.eDay.grid(row=2, column=5, sticky=tkinter.W, padx=3, pady=3)
-        Label(root, text='住址:').grid(row=3, column=0, sticky=tkinter.W, padx=3, pady=3)
-        self.eAddr = Entry(root, width=32)
-        self.eAddr.grid(row=3, column=1, sticky=tkinter.W, padx=3, pady=3, columnspan=5)
-        Label(root, text='证件号码:').grid(row=4, column=0, sticky=tkinter.W, padx=3, pady=3)
-        self.eIdn = Entry(root, width=32)
-        self.eIdn.grid(row=4, column=1, sticky=tkinter.W, padx=3, pady=3, columnspan=5)
-        Label(root, text='签发机关:').grid(row=5, column=0, sticky=tkinter.W, padx=3, pady=3)
-        self.eOrg = Entry(root, width=32)
-        self.eOrg.grid(row=5, column=1, sticky=tkinter.W, padx=3, pady=3, columnspan=5)
-        Label(root, text='有效期限:').grid(row=6, column=0, sticky=tkinter.W, padx=3, pady=3)
-        self.eLife = Entry(root, width=32)
-        self.eLife.grid(row=6, column=1, sticky=tkinter.W, padx=3, pady=3, columnspan=5)
+        self.eName = self._create_label_entry(root, '姓名:', 1, 0, width=8)
+        self.eSex = self._create_label_entry(root, '性别:', 1, 2, width=8)
+        self.eNation = self._create_label_entry(root, '民族:', 1, 4, width=8)
+
+        self.eYear = self._create_label_entry(root, '出生年:', 2, 0, width=8)
+        self.eMon = self._create_label_entry(root, '月:', 2, 2, width=8)
+        self.eDay = self._create_label_entry(root, '日:', 2, 4, width=8)
+
+        self.eAddr = self._create_label_entry(root, '住址:', 3, 0, width=32, columnspan=5)
+        self.eIdn = self._create_label_entry(root, '证件号码:', 4, 0, width=32, columnspan=5)
+        self.eOrg = self._create_label_entry(root, '签发机关:', 5, 0, width=32, columnspan=5)
+        self.eLife = self._create_label_entry(root, '有效期限:', 6, 0, width=32, columnspan=5)
+
         Label(root, text='选项:').grid(row=7, column=0, sticky=tkinter.W, padx=3, pady=3)
         self.eBgvar = tkinter.IntVar()
         self.eBgvar.set(1)
