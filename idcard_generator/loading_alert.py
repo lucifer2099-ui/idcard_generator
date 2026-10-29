@@ -2,7 +2,6 @@
 import tkinter as tk
 from tkinter import ttk
 import threading
-import time
 
 
 def format_form(form, width, height):
