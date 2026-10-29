@@ -5,8 +5,17 @@ secure_random = secrets.SystemRandom()
 import sys
 from . import utils
 
+_cached_addresses = None
+
 def get_random_address():
     """从配置文件中随机获取一个地址"""
+    global _cached_addresses
+    if _cached_addresses is not None:
+        if _cached_addresses:
+            return secure_random.choice(_cached_addresses)
+        else:
+            return "江苏省南京市鼓楼区中山路1号"
+
     # 判断是否为打包后的exe环境
     if getattr(sys, 'frozen', False):
         # 打包后的exe环境，从exe同目录读取配置文件
@@ -23,14 +32,15 @@ def get_random_address():
     try:
         with open(config_path, 'r', encoding='utf-8') as f:
             config = json.load(f)
-            addresses = config.get('addresses', [])
-            if addresses:
-                return secure_random.choice(addresses)
+            _cached_addresses = config.get('addresses', [])
+            if _cached_addresses:
+                return secure_random.choice(_cached_addresses)
             else:
                 # 如果配置文件为空，返回默认地址
                 return "江苏省南京市鼓楼区中山路1号"
     except (FileNotFoundError, json.JSONDecodeError):
         # 如果配置文件不存在或格式错误，返回默认地址
+        _cached_addresses = []
         return "江苏省南京市鼓楼区中山路1号"
 
 def create_default_config_file(config_path):
