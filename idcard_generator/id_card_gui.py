@@ -32,14 +32,11 @@ def change_background(img, img_back, zoom_size, center):
     # 转换hsv
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     # 获取mask
-    # lower_blue = np.array([78, 43, 46])
-    # upper_blue = np.array([110, 255, 255])
     diff = [5, 30, 30]
     gb = hsv[0, 0]
     lower_blue = numpy.array(gb - diff)
     upper_blue = numpy.array(gb + diff)
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
-    # cv2.imshow('Mask', mask)
 
     # 腐蚀膨胀
     erode = cv2.erode(mask, None, iterations=1)
