@@ -60,6 +60,12 @@ def paste(avatar, bg, zoom_size, center):
 
 
 class IDGen:
+    def __init__(self):
+        self.name_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/hei.ttf'), 72)
+        self.other_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/hei.ttf'), 64)
+        self.birth_date_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/fzhei.ttf'), 60)
+        self.id_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/ocrb10bt.ttf'), 90)
+
     def random_data(self):
         random_name = name_utils.random_name()
         set_entry_value(self.eName, random_name["name_full"])
@@ -94,32 +100,27 @@ class IDGen:
         avatar = PImage.open(self.f_name)  # 500x670
         empty_image = PImage.open(os.path.join(asserts_dir, 'empty.png'))
 
-        name_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/hei.ttf'), 72)
-        other_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/hei.ttf'), 64)
-        birth_date_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/fzhei.ttf'), 60)
-        id_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/ocrb10bt.ttf'), 90)
-
         draw = ImageDraw.Draw(empty_image)
-        draw.text((630, 690), self.eName.get(), fill=(0, 0, 0), font=name_font)
-        draw.text((630, 840), self.eSex.get(), fill=(0, 0, 0), font=other_font)
-        draw.text((1030, 840), self.eNation.get(), fill=(0, 0, 0), font=other_font)
-        draw.text((630, 975), self.eYear.get(), fill=(0, 0, 0), font=birth_date_font)
-        draw.text((950, 975), self.eMon.get(), fill=(0, 0, 0), font=birth_date_font)
-        draw.text((1150, 975), self.eDay.get(), fill=(0, 0, 0), font=birth_date_font)
+        draw.text((630, 690), self.eName.get(), fill=(0, 0, 0), font=self.name_font)
+        draw.text((630, 840), self.eSex.get(), fill=(0, 0, 0), font=self.other_font)
+        draw.text((1030, 840), self.eNation.get(), fill=(0, 0, 0), font=self.other_font)
+        draw.text((630, 975), self.eYear.get(), fill=(0, 0, 0), font=self.birth_date_font)
+        draw.text((950, 975), self.eMon.get(), fill=(0, 0, 0), font=self.birth_date_font)
+        draw.text((1150, 975), self.eDay.get(), fill=(0, 0, 0), font=self.birth_date_font)
 
         # 住址
         addr_loc_y = 1115
         addr_lines = self.get_addr_lines()
         for addr_line in addr_lines:
-            draw.text((630, addr_loc_y), addr_line, fill=(0, 0, 0), font=other_font)
+            draw.text((630, addr_loc_y), addr_line, fill=(0, 0, 0), font=self.other_font)
             addr_loc_y += 100
 
         # 身份证号
-        draw.text((900, 1475), self.eIdn.get(), fill=(0, 0, 0), font=id_font)
+        draw.text((900, 1475), self.eIdn.get(), fill=(0, 0, 0), font=self.id_font)
 
         # 背面
-        draw.text((1050, 2750), self.eOrg.get(), fill=(0, 0, 0), font=other_font)
-        draw.text((1050, 2895), self.eLife.get(), fill=(0, 0, 0), font=other_font)
+        draw.text((1050, 2750), self.eOrg.get(), fill=(0, 0, 0), font=self.other_font)
+        draw.text((1050, 2895), self.eLife.get(), fill=(0, 0, 0), font=self.other_font)
 
         if self.eBgvar.get():
             avatar = cv2.cvtColor(numpy.asarray(avatar), cv2.COLOR_RGBA2BGRA)
