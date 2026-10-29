@@ -52,13 +52,6 @@ def change_background(img, img_back, zoom_size, center):
     return img_back
 
 
-def paste(avatar, bg, zoom_size, center):
-    avatar = cv2.resize(avatar, zoom_size)
-    rows, cols, channels = avatar.shape
-    bg[center[0]:center[0]+rows, center[1]:center[1]+cols] = avatar
-    return bg
-
-
 class IDGen:
     def random_data(self):
         random_name = name_utils.random_name()
@@ -130,7 +123,6 @@ class IDGen:
             avatar = avatar.resize((500, 670))
             avatar = avatar.convert('RGBA')
             empty_image.paste(avatar, (1500, 690), mask=avatar)
-            # im = paste(avatar, im, (500, 670), (690, 1500))
 
         empty_image.save('color.png')
         empty_image.convert('L').save('bw.png')
