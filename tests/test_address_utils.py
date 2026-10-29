@@ -13,6 +13,10 @@ class TestAddressUtils(unittest.TestCase):
         self.test_dir = tempfile.TemporaryDirectory()
         self.config_path = os.path.join(self.test_dir.name, 'test_address_config.json')
 
+        # Reset cache
+        import idcard_generator.address_utils
+        idcard_generator.address_utils._cached_addresses = None
+
     def tearDown(self):
         # Cleanup the temporary directory
         self.test_dir.cleanup()
