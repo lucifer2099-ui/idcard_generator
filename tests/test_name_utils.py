@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import patch
 from idcard_generator.name_utils import random_name
 
