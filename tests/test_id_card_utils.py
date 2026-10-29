@@ -26,7 +26,6 @@ def test_calculate_short_string():
     # Should raise IndexError when string is shorter than 17
     with pytest.raises(IndexError):
         IdentityCard.calculate("1234567890123456")
-import calendar
 import datetime
 import unittest
 from unittest.mock import patch
