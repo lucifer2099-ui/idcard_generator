@@ -32,14 +32,11 @@ def change_background(img, img_back, zoom_size, center):
     # 转换hsv
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     # 获取mask
-    # lower_blue = np.array([78, 43, 46])
-    # upper_blue = np.array([110, 255, 255])
     diff = [5, 30, 30]
     gb = hsv[0, 0]
     lower_blue = numpy.array(gb - diff)
     upper_blue = numpy.array(gb + diff)
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
-    # cv2.imshow('Mask', mask)
 
     # 腐蚀膨胀
     erode = cv2.erode(mask, None, iterations=1)
@@ -52,14 +49,13 @@ def change_background(img, img_back, zoom_size, center):
     return img_back
 
 
-def paste(avatar, bg, zoom_size, center):
-    avatar = cv2.resize(avatar, zoom_size)
-    rows, cols, channels = avatar.shape
-    bg[center[0]:center[0]+rows, center[1]:center[1]+cols] = avatar
-    return bg
-
-
 class IDGen:
+    def __init__(self):
+        self.name_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/hei.ttf'), 72)
+        self.other_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/hei.ttf'), 64)
+        self.birth_date_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/fzhei.ttf'), 60)
+        self.id_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/ocrb10bt.ttf'), 90)
+
     def random_data(self):
         random_name = name_utils.random_name()
         set_entry_value(self.eName, random_name["name_full"])
@@ -94,32 +90,27 @@ class IDGen:
         avatar = PImage.open(self.f_name)  # 500x670
         empty_image = PImage.open(os.path.join(asserts_dir, 'empty.png'))
 
-        name_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/hei.ttf'), 72)
-        other_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/hei.ttf'), 64)
-        birth_date_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/fzhei.ttf'), 60)
-        id_font = ImageFont.truetype(os.path.join(asserts_dir, 'fonts/ocrb10bt.ttf'), 90)
-
         draw = ImageDraw.Draw(empty_image)
-        draw.text((630, 690), self.eName.get(), fill=(0, 0, 0), font=name_font)
-        draw.text((630, 840), self.eSex.get(), fill=(0, 0, 0), font=other_font)
-        draw.text((1030, 840), self.eNation.get(), fill=(0, 0, 0), font=other_font)
-        draw.text((630, 975), self.eYear.get(), fill=(0, 0, 0), font=birth_date_font)
-        draw.text((950, 975), self.eMon.get(), fill=(0, 0, 0), font=birth_date_font)
-        draw.text((1150, 975), self.eDay.get(), fill=(0, 0, 0), font=birth_date_font)
+        draw.text((630, 690), self.eName.get(), fill=(0, 0, 0), font=self.name_font)
+        draw.text((630, 840), self.eSex.get(), fill=(0, 0, 0), font=self.other_font)
+        draw.text((1030, 840), self.eNation.get(), fill=(0, 0, 0), font=self.other_font)
+        draw.text((630, 975), self.eYear.get(), fill=(0, 0, 0), font=self.birth_date_font)
+        draw.text((950, 975), self.eMon.get(), fill=(0, 0, 0), font=self.birth_date_font)
+        draw.text((1150, 975), self.eDay.get(), fill=(0, 0, 0), font=self.birth_date_font)
 
         # 住址
         addr_loc_y = 1115
         addr_lines = self.get_addr_lines()
         for addr_line in addr_lines:
-            draw.text((630, addr_loc_y), addr_line, fill=(0, 0, 0), font=other_font)
+            draw.text((630, addr_loc_y), addr_line, fill=(0, 0, 0), font=self.other_font)
             addr_loc_y += 100
 
         # 身份证号
-        draw.text((900, 1475), self.eIdn.get(), fill=(0, 0, 0), font=id_font)
+        draw.text((900, 1475), self.eIdn.get(), fill=(0, 0, 0), font=self.id_font)
 
         # 背面
-        draw.text((1050, 2750), self.eOrg.get(), fill=(0, 0, 0), font=other_font)
-        draw.text((1050, 2895), self.eLife.get(), fill=(0, 0, 0), font=other_font)
+        draw.text((1050, 2750), self.eOrg.get(), fill=(0, 0, 0), font=self.other_font)
+        draw.text((1050, 2895), self.eLife.get(), fill=(0, 0, 0), font=self.other_font)
 
         if self.eBgvar.get():
             avatar = cv2.cvtColor(numpy.asarray(avatar), cv2.COLOR_RGBA2BGRA)
@@ -130,7 +121,6 @@ class IDGen:
             avatar = avatar.resize((500, 670))
             avatar = avatar.convert('RGBA')
             empty_image.paste(avatar, (1500, 690), mask=avatar)
-            # im = paste(avatar, im, (500, 670), (690, 1500))
 
         empty_image.save('color.png')
         empty_image.convert('L').save('bw.png')
