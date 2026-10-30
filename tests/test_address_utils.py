@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import patch, mock_open
 import json
 import os
-import sys
 import tempfile
 
 from idcard_generator.address_utils import get_random_address, create_default_config_file
@@ -12,6 +11,10 @@ class TestAddressUtils(unittest.TestCase):
         # Create a temporary directory
         self.test_dir = tempfile.TemporaryDirectory()
         self.config_path = os.path.join(self.test_dir.name, 'test_address_config.json')
+
+        # Reset cache
+        import idcard_generator.address_utils
+        idcard_generator.address_utils._cached_addresses = None
 
     def tearDown(self):
         # Cleanup the temporary directory

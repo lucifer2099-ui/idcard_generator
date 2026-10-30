@@ -113,12 +113,3 @@ def generate_validity_period():
     return start_time.strftime("%Y.%m.%d"), expire_time.strftime("%Y.%m.%d")
 
 
-def test():
-    code = random_card_no()  # 17位身份证
-    print(code)
-    if IdentityCard.check(code):
-        print("你的校验位为:%s" % IdentityCard.calculate(code))
-
-
-if __name__ == '__main__':
-    test()
